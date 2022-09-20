@@ -4,13 +4,13 @@ import config from '../config/config.json';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import { networkInterfaces } from 'os';
 
 
 export class Http {
-
     // *************************************************** EXPRESS ****************************************************
     async init(cbFuntion) {
-        const port = config.config_http.port_express;
+        const port = config.port_express;
         const app = express();
         app.use(cors())
         app.use(bodyParser.json({ limit: '200mb' }));                       // to support JSON-encoded bodies
@@ -42,27 +42,16 @@ export class Http {
     }
 
 
-
-}
-
-//----debugger----//
-const debug = {
-    code: 200,
-    msg: "SQL executed.",
-    result: {
-        empresas: [1],
-        data: [{
-            id: 65,
-            idprofile: 1,
-            iduser: "demo",
-            nombre: "Demo Cocodin Technology",
-            passwd: "demo",
-            reseller_id: 1,
-            state: 0
-        }],
-
-        length: 1,
-        total: 1,
-        trace: "",
+    public getLocalNetworks() {
+        const nets = networkInterfaces();
+        const results = {};
+        if (nets.Ethernet)
+            for (const net of nets.Ethernet) {
+                results[net.family] = net.address
+            }
+        return results;
     }
+
 }
+
+
