@@ -19,7 +19,7 @@ new class Main {
         try {
             const nets = this.http.getLocalNetworks();
             console.log(JSON.stringify(nets));
-            await this.http.init((req, res) => this.processHttp(req, res));
+        /*await this.http.init((req, res) => this.processHttp(req, res)); */
             await this.socket.init((value) => this.processSocketMsg(value));
         } catch (err) {
             console.log(err)
@@ -33,7 +33,17 @@ new class Main {
     }
 
 
-    private async processHttp(req, res) {
+    setVolume(value) {
+        speaker.set(value);
+    }
+
+  /*   getVolume(req: any, res: any) {
+        const value = speaker.get();
+        this.http.sendResponse(res, { value: value });
+    } */
+
+
+/*     private async processHttp(req, res) {
         try {
             switch (req.body.accion) {
                 case 'get_volume':
@@ -50,18 +60,5 @@ new class Main {
             console.log(err)
             this.http.sendResponse(res, null, err);
         }
-    }
-
-
-    setVolume(value) {
-        speaker.set(value);
-    }
-
-    getVolume(req: any, res: any) {
-        const value = speaker.get();
-        this.http.sendResponse(res, { value: value });
-    }
-
-
-
+    } */
 }

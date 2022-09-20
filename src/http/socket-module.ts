@@ -21,13 +21,11 @@ export class Socket {
             socket.on('value', (data) => {
                 console.log('value ' + data.value);
                 cbFuntion(data.value);
-                io.to(socket.id).emit('response', {});
+                io.emit('response', { changeValue: data.value });
             });
 
             console.log('connection socket ' + JSON.stringify(socket.handshake.query));
-
             io.to(socket.id).emit('connected', { initialValue: speaker.get() });
-
         });
 
         httpServer.listen(port);
