@@ -1,4 +1,5 @@
 import { Http } from './http/http-module';
+import { Socket } from './http/socket-module';
 import { speaker } from 'win-audio';
 
 
@@ -8,7 +9,7 @@ console.log(level); */
 new class Main {
 
     private http: Http = new Http();
-
+    private socket: Socket = new Socket();
 
     constructor() {
         this.init();
@@ -19,9 +20,16 @@ new class Main {
     private async init() {
         try {
             await this.http.init((req, res) => this.processHttp(req, res));
+            await this.socket.init((value) => this.processSocketMsg(value));
         } catch (err) {
             console.log(err)
         }
+    }
+
+
+    processSocketMsg(value: any) {
+        console.log(JSON.stringify(value));
+        this.setVolume(value);
     }
 
 
@@ -32,7 +40,7 @@ new class Main {
                     this.getVolume(req, res);
                     break;
                 case 'set_volume':
-                    this.setVolume(req, res);
+                    this.setVolume(req.body.value)
                     break;
 
                 default:
@@ -45,14 +53,14 @@ new class Main {
     }
 
 
-    setVolume(req: any, res: any) {
-        speaker.set(req.body.value);
+    setVolume(value) {
+        speaker.set(value);
     }
 
 
     getVolume(req: any, res: any) {
         const value = speaker.get();
-        this.http.sendResponse(res, value);
+        this.http.sendResponse(res, { value: value });
     }
 
 
