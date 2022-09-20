@@ -12,8 +12,6 @@ new class Main {
 
     constructor() {
         this.init();
-
-        speaker.set(100);
     }
 
     private async init() {
@@ -46,7 +44,8 @@ new class Main {
 
 
     setVolume(req: any, res: any) {
-        speaker.set(req.body.value);
+        console.log(req.body.value);
+        speaker.set(Number.parseInt(req.body.value, 10));
     }
 
 

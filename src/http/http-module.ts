@@ -26,7 +26,7 @@ export class Http {
     public sendResponse(response, result, error?, errorCode?) {
         if (!response.close) {
             if (result) {
-                response.send(result);
+                response.send({ value: result });
             }
             if (error) {
                 const err = { msg: error.message, stack: error.stack, code: 400 };
