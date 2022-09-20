@@ -13,12 +13,12 @@ new class Main {
 
     constructor() {
         this.init();
-
-        speaker.set(100);
     }
 
     private async init() {
         try {
+            const nets = this.http.getLocalNetworks();
+            console.log(JSON.stringify(nets));
             await this.http.init((req, res) => this.processHttp(req, res));
             await this.socket.init((value) => this.processSocketMsg(value));
         } catch (err) {

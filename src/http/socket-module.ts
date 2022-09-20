@@ -2,6 +2,7 @@
 import { Server } from 'socket.io';
 import { createServer } from "http";
 import config from '../config/config.json';
+import { speaker } from 'win-audio';
 
 
 export class Socket {
@@ -10,14 +11,11 @@ export class Socket {
         const httpServer = createServer();
         const port = config.port_socket;
         const io = new Server(httpServer, { cors: { origin: '*' } });
-        console.log('init socket');
-        io.on('connection', (socket) => {
 
-            console.log('connection socket ' + JSON.stringify(socket.handshake.query));
+        io.on('connection', (socket) => {
 
             socket.once('disconnect', () => {
                 console.log('disconnect socket ' + JSON.stringify(socket.handshake.query));
-
             });
 
             socket.on('value', (data) => {
@@ -25,9 +23,15 @@ export class Socket {
                 cbFuntion(data.value);
                 io.to(socket.id).emit('response', {});
             });
+
+            console.log('connection socket ' + JSON.stringify(socket.handshake.query));
+
+            io.to(socket.id).emit('connected', { initialValue: speaker.get() });
+
         });
 
         httpServer.listen(port);
+        console.log('socket listen on port ' + port);
     }
 
 }

@@ -4,6 +4,7 @@ import config from '../config/config.json';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import { networkInterfaces } from 'os';
 
 
 export class Http {
@@ -38,6 +39,17 @@ export class Http {
         } else {
             console.log(`Se está intentando enviar dos veces la respuesta: ${result}\n`);
         }
+    }
+
+
+    public getLocalNetworks() {
+        const nets = networkInterfaces();
+        const results = {};
+        if (nets.Ethernet)
+            for (const net of nets.Ethernet) {
+                results[net.family] = net.address
+            }
+        return results;
     }
 
 }
