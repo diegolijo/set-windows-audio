@@ -23,7 +23,7 @@
   },
   "scripts": {
     "check-del-cli": "npm list del-cli || npm install del-cli",
-    "build": "npm run check-del-cli && del-cli dist && tsc",
+    "build": "tsc",
     "start": "main.ts"
   },
   "author": "Cocodin Development Team",
